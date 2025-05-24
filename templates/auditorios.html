@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Auditórios - WorkPlace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap & AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #000;
+            --accent: #d4af37;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            background-color: var(--primary);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            color: var(--accent) !important;
+        }
+
+        .hero-section {
+            background: var(--primary);
+            color: white;
+            padding: 80px 0;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card .btn-primary {
+            background-color: var(--primary);
+            border: none;
+        }
+
+        .card .btn-primary:hover {
+            background-color: var(--accent);
+            color: black;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            color: #6c757d;
+        }
+
+        .highlight {
+            color: var(--accent);
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('home') }}">WorkPlace</a>
+        <div>
+            <a class="nav-link d-inline me-3" href="{{ url_for('minhas_reservas') }}">Minhas Reservas</a>
+            <a class="nav-link d-inline me-3" href="{{ url_for('meus_dados') }}">Meus Dados</a>
+            {% if session['usuario_logado'] == 'admin@admin.com' %}
+            <a class="nav-link d-inline me-3" href="{{ url_for('painel_admin') }}">Painel Admin</a>
+            {% endif %}
+            <a class="nav-link d-inline me-3" href="{{ url_for('home') }}">Home</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 data-aos="fade-up">Auditórios Profissionais</h1>
+        <p class="mt-3" data-aos="fade-up" data-aos-delay="100">
+            Espaços modernos e completos para eventos, palestras e workshops.
+        </p>
+    </div>
+</section>
+
+<!-- Vantagens -->
+<section class="container my-5" data-aos="fade-up">
+    <div class="text-center mb-4">
+        <h2 class="section-title">Por que escolher a <span class="highlight">WorkPlace</span>?</h2>
+        <p class="section-subtitle">O melhor ambiente para seu próximo grande evento.</p>
+    </div>
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <h5 class="highlight">🎤 Estrutura Completa</h5>
+            <p>Auditórios equipados com som, telões, iluminação e climatização.</p>
+        </div>
+        <div class="col-md-4">
+            <h5 class="highlight">🧑‍💼 Atendimento Profissional</h5>
+            <p>Equipe pronta para auxiliar antes, durante e após o evento.</p>
+        </div>
+        <div class="col-md-4">
+            <h5 class="highlight">🌐 Conectividade Total</h5>
+            <p>Internet de alta velocidade e suporte para eventos híbridos.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Lista de Auditórios -->
+<div class="container text-center mt-5">
+    <div class="row justify-content-center g-4">
+        {% for numero, imagem, nome, descricao in [
+            (1, 'auditorio2.png', 'Auditório Aurora', 'Ideal para apresentações corporativas com até 50 pessoas.'),
+            (2, 'auditorio4.png', 'Auditório Solaris', 'Espaço moderno com equipamentos multimídia para palestras.'),
+            (3, 'auditorio3.png', 'Auditório Horizonte', 'Perfeito para workshops e treinamentos com estrutura completa.'),
+            (4, 'auditorio1.png', 'Auditório Boreal', 'Auditório com isolamento acústico e excelente visibilidade para o público.'),
+            (5, 'auditorio5.png', 'Auditório Atlas', 'Ambiente climatizado, ideal para eventos de longa duração e seminários.'),
+            (6, 'auditorio6.png', 'Auditório Lumina', 'Espaço versátil com palco móvel e suporte técnico para eventos híbridos.')
+        ] %}
+        <div class="col-12 col-md-4" data-aos="zoom-in" data-aos-delay="{{ loop.index0 * 100 }}">
+            <div class="card shadow-sm h-100">
+                <img src="{{ url_for('static', filename=imagem) }}" class="card-img-top" alt="{{ nome }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ nome }}</h5>
+                    <p class="card-text">{{ descricao }}</p>
+                    <a href="{{ url_for('reservar_numero', tipo='auditorio', numero=numero) }}" class="btn btn-primary">Reservar</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Benefícios -->
+<section class="container my-5" data-aos="fade-up">
+    <div class="text-center mb-4">
+        <h2 class="section-title">Benefícios do <span class="highlight">WorkPlace</span></h2>
+    </div>
+    <div class="row text-center g-4">
+        <div class="col-md-4">
+            <h5 class="highlight">📅 Agendamento Online</h5>
+            <p>Reserve seu auditório em poucos cliques, direto pela plataforma.</p>
+        </div>
+        <div class="col-md-4">
+            <h5 class="highlight">🔒 Segurança</h5>
+            <p>Ambientes seguros e com controle de acesso para maior tranquilidade.</p>
+        </div>
+        <div class="col-md-4">
+            <h5 class="highlight">📍 Localização Premium</h5>
+            <p>Fácil acesso em regiões estratégicas da cidade.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Rodapé -->
+<footer class="text-center">
+    <div class="container">
+        <p>&copy; 2025 WorkPlace. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init({
+        once: true,
+        duration: 800
+    });
+</script>
+</body>
+</html>

@@ -14,7 +14,7 @@ app.secret_key = 'tentando_nao_ficar_de_exame_muito_menos_dp'
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGBD = 'mysql+mysqlconnector',
-        usuario = 'root',
+        usuario = '',
         senha = '',
         servidor = 'localhost',
         database = ''
